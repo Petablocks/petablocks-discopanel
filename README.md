@@ -1,4 +1,4 @@
-# DiscoPanel (PETABLOCKS Enterprise Fork • `v1.1.0`)
+# DiscoPanel (PETABLOCKS Enterprise Fork • `v1.1.1`)
 
 <div align="center">
   <img src="web/discopanel/static/g1_256x256.png" alt="DiscoPanel" width="128" height="128" />

@@ -11,19 +11,19 @@ plugins:
       - path=schemav1.yaml
 
   # Generate Go code with protoc-gen-go
-  - remote: buf.build/protocolbuffers/go
+  - remote: buf.build/protocolbuffers/go:v1.36.5
     out: pkg/proto
     opt:
       - paths=source_relative
 
-  # Generate Connect-Go
-  - remote: buf.build/connectrpc/go
+  # Generate Connect-Go (pinned to v1.18.1 to match connectrpc.com/connect v1.19.1 in go.mod)
+  - remote: buf.build/connectrpc/go:v1.18.1
     out: pkg/proto
     opt:
       - paths=source_relative
 
   # Generate TypeScript
-  - remote: buf.build/bufbuild/es
+  - remote: buf.build/bufbuild/es:v2.2.5
     out: web/discopanel/src/lib/proto
     opt:
       - target=ts

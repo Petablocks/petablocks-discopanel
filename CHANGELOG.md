@@ -4,6 +4,10 @@ All notable PETABLOCKS customizations and upstream synchronizations for `petablo
 
 ---
 
+## [1.1.1] - 2026-10-23
+### Fixed
+- **Protobuf Codegen Version Pinning (`buf.gen.yaml`)**: Pinned remote Buf plugins (`buf.build/connectrpc/go:v1.18.1`, `buf.build/protocolbuffers/go:v1.36.5`, `buf.build/bufbuild/es:v2.2.5`) so `buf generate` in Docker builds produces `connectrpc.com/connect` v1 imports matching `go.mod`.
+
 ## [1.1.0] - 2026-10-23
 ### Added
 - **🛡️ Isolated PETABLOCKS Extension Package (`internal/petablocks/`)**:
