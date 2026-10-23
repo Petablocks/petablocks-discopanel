@@ -1,12 +1,22 @@
-# DiscoPanel
+# DiscoPanel (PETABLOCKS Enterprise Fork • `v1.1.0`)
 
 <div align="center">
   <img src="web/discopanel/static/g1_256x256.png" alt="DiscoPanel" width="128" height="128" />
   
-  **The Minecraft server manager that works**
+  **The Minecraft server manager that works — Customized for the PETABLOCKS Cluster**
   
   [Website](https://discopanel.app) • [Gallery](https://discopanel.app#gallery) • [Discord](https://discord.gg/6Z9yKTbsrP) • [Docker Hub](https://hub.docker.com/r/nickheyer/discopanel)
 </div>
+
+---
+
+## 🛡️ PETABLOCKS Cluster Extensions (`internal/petablocks/`)
+
+This repository is the official PETABLOCKS fork of DiscoPanel (`v1.1.0`), deployed as a headless node agent across `PETABLOCKS-MCS1` (`10.20.110.118`), `PETABLOCKS-MCS2` (`10.20.110.119`), and `PETABLOCKS-MCS3` (`10.20.110.120`). All PETABLOCKS customizations are isolated inside `internal/petablocks/` so upstream `nickheyer/discopanel` releases can be merged cleanly:
+
+* **Internal Bearer Token Auth (`internal/petablocks/auth.go`)**: Supports headless ConnectRPC authentication from `petablocks-admin` using `DISCOPANEL_INTERNAL_API_TOKEN` / `API_SECRET_TOKEN`.
+* **Non-Destructive Container Auto-Adoption (`internal/petablocks/adopt.go`)**: Automatically discovers and adopts pre-existing Minecraft/Velocity containers on startup and via `POST /api/v1/petablocks/adopt` (including `petablocks-modpack-s2-test`, `pb-paper-smp`, `petablocks-create-2`, `petablocks-patreon-creative`, `pb-lobby-main`, and `pb-velocity-proxy`) without recreating or stopping running servers.
+* **Telemetry Companion Auto-Config (`internal/petablocks/telemetry.go`)**: Hooks into DiscoPanel's `events.Bus` to ensure `petablocks-telemetry.json` is automatically provisioned on server start/restart.
 
 ---
 

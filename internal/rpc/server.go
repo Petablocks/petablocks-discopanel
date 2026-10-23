@@ -17,6 +17,7 @@ import (
 	"github.com/nickheyer/discopanel/internal/events"
 	"github.com/nickheyer/discopanel/internal/metrics"
 	"github.com/nickheyer/discopanel/internal/module"
+	"github.com/nickheyer/discopanel/internal/petablocks"
 	"github.com/nickheyer/discopanel/internal/proxy"
 	"github.com/nickheyer/discopanel/internal/rbac"
 	"github.com/nickheyer/discopanel/internal/rpc/handlers"
@@ -179,6 +180,9 @@ func (s *Server) setupHandler() {
 
 	// Serve dynamic OpenAPI spec
 	mux.HandleFunc("/api/v1/openapi.yaml", handlers.NewOpenAPIHandler(s.log, s.authManager.IsAnyAuthEnabled))
+
+	// PETABLOCKS: Non-destructive container adoption & discovery endpoint
+	mux.HandleFunc("/api/v1/petablocks/adopt", petablocks.NewAdoptHandler(s.store, s.docker, s.log))
 
 	// Serve frontend for non-RPC routes
 	s.setupFrontend(mux)

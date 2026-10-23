@@ -16,6 +16,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/nickheyer/discopanel/internal/config"
 	"github.com/nickheyer/discopanel/internal/db"
+	"github.com/nickheyer/discopanel/internal/petablocks"
 	"github.com/nickheyer/discopanel/internal/rbac"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -285,6 +286,14 @@ func (m *Manager) AuthenticateFromHeader(ctx context.Context, authHeader string)
 	}
 
 	if token != "" {
+		if petablocks.ValidateInternalToken(token) {
+			return &AuthenticatedUser{
+				ID:       "petablocks-admin",
+				Username: "petablocks-admin",
+				Roles:    []string{"admin"},
+				Provider: "petablocks-internal",
+			}, nil
+		}
 		if strings.HasPrefix(token, "dp_") {
 			return m.ValidateAPIToken(ctx, token)
 		}

@@ -18,6 +18,7 @@ import (
 	"github.com/nickheyer/discopanel/internal/events"
 	"github.com/nickheyer/discopanel/internal/metrics"
 	"github.com/nickheyer/discopanel/internal/module"
+	"github.com/nickheyer/discopanel/internal/petablocks"
 	"github.com/nickheyer/discopanel/internal/proxy"
 	"github.com/nickheyer/discopanel/internal/rpc"
 	"github.com/nickheyer/discopanel/internal/scheduler"
@@ -85,6 +86,13 @@ func main() {
 	// Ensure Docker network exists
 	if err := dockerClient.EnsureNetwork(); err != nil {
 		log.Error("Failed to ensure Docker network: %v", err)
+	}
+
+	// PETABLOCKS: Non-destructively discover and adopt existing host Minecraft containers on startup
+	if adoptRes, err := petablocks.DiscoverAndAdoptContainers(ctx, store, dockerClient, log); err != nil {
+		log.Warn("PETABLOCKS container auto-adoption warning: %v", err)
+	} else if len(adoptRes.Adopted) > 0 {
+		log.Info("PETABLOCKS auto-adopted %d existing Minecraft server container(s)", len(adoptRes.Adopted))
 	}
 
 	// Clean up orphaned containers on startup
@@ -196,6 +204,7 @@ func main() {
 	// Register event consumers on the event bus - EVENT CONSUMERS REGISTER HERE...
 	eventBus.Subscribe(moduleManager.HandleServerEvent)
 	eventBus.Subscribe(taskScheduler.HandleServerEvent)
+	petablocks.RegisterEventHandlers(eventBus, store, log)
 
 	// Start the metrics collector now that consumers are subscribed
 	if err := metricsCollector.Start(); err != nil {
